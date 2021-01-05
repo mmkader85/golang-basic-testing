@@ -16,8 +16,13 @@ import (
 // 4. valid response but invalid json format
 // 5. valid json format and no error
 
-func TestGetCountryRestClientError(t *testing.T) {
+func TestMain(m *testing.M) {
 	rest.StartMockupServer()
+	m.Run()
+}
+
+func TestGetCountryRestClientError(t *testing.T) {
+	rest.FlushMockups()
 	apiHeaders := make(http.Header)
 	mock := rest.Mock{
 		URL:          fmt.Sprintf(UrlGetCountry, "IN"),
@@ -36,7 +41,7 @@ func TestGetCountryRestClientError(t *testing.T) {
 }
 
 func TestGetCountryNotFound(t *testing.T) {
-	rest.StartMockupServer()
+	rest.FlushMockups()
 	apiHeaders := make(http.Header)
 	mock := rest.Mock{
 		URL:          fmt.Sprintf(UrlGetCountry, "XYZ"),
@@ -55,7 +60,7 @@ func TestGetCountryNotFound(t *testing.T) {
 }
 
 func TestGetCountryInvalidErrorInterface(t *testing.T) {
-	rest.StartMockupServer()
+	rest.FlushMockups()
 	apiHeaders := make(http.Header)
 	// mock status as string instead of int
 	mock := rest.Mock{
@@ -75,7 +80,7 @@ func TestGetCountryInvalidErrorInterface(t *testing.T) {
 }
 
 func TestGetCountryValidResponseButInvalidFormat(t *testing.T) {
-	rest.StartMockupServer()
+	rest.FlushMockups()
 	apiHeaders := make(http.Header)
 	// mock `id` in RespBody as int instead of string
 	// actual response {"id":"IN","name":"India","time_zone":"GMT+05:30"}
@@ -96,7 +101,7 @@ func TestGetCountryValidResponseButInvalidFormat(t *testing.T) {
 }
 
 func TestGetCountryNoError(t *testing.T) {
-	rest.StartMockupServer()
+	rest.FlushMockups()
 	apiHeaders := make(http.Header)
 	mock := rest.Mock{
 		URL:          fmt.Sprintf(UrlGetCountry, "IN"),
